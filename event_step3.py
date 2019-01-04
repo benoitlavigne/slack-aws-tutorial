@@ -77,8 +77,22 @@ def event_processor(event_payload):
         # building the message we want to send the user
         text = f"welcome to <#{channel_id}>! Here's the channel's topic: \n {topic} \n and the purpose: \n {purpose}"
         # sending an ephemeral message to the user who just joined the channel.
+        attachments = [
+            {
+                "fallback": "open Slack to acknowledge",
+                "callback_id": "ack",
+                "actions": [
+                    {
+                        "name": "confirm",
+                        "text": "confirm",
+                        "type": "button",
+                        "value": "confirm"
+                    }
+                ]
+            }
+        ]
         response = sc.api_call("chat.postEphemeral",
-                               channel=channel_id, text=text, user=user_id)
+                               channel=channel_id, text=text, attachments=attachments, user=user_id)
         # Slack API will return an "ok":True or "ok":False
         success = response.get("ok")
         return success
