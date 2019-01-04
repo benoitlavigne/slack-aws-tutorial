@@ -1,31 +1,62 @@
 
 
-# Step2: Getting our app triggered when a user joins a channel and using the Web API
+# Step1: Building a Slack app listening and replying to messages
 
-As a second step, we're going to modify our app so that it starts listening to the event generated when users join channels, and then we'll leverage the Web API to get the channel's topic and purpose, and send the joining user a message.
+As a first step, we're going to build a Slack app listening and replying to a simple type of events: messages sent to it in a Direct Message.
+While our app leverages a bot user, it's not a conversational app. However, users may still try to send your app messages so it's usually useful to provide some kind of helpful message explaining how to use your app.
 
-
-
-## Subscribing to additional events
-
-- Go back to your app's config page (from https://api.slack.com/apps, click on your app's name)
-- Click on "Event Subscriptions", and under "Subscribe to Bot Events", click on "add Bot User Event". Then, select `member_joined_channel` and hit "Save Changes" at the bottom of the page.
-
-Your app is now configured to receive payloads when a user joins a channel your bot user is a member of. Let's make sure our lambda function is able to handle them.
+Building this component will allow us to ensure that our app is able to subscribe to and receive events, and it will be easy to test: once you're done with the config, send a direct message to your app. If it replies, you're ready to move to step 2!
 
 
-## Modifying your lambda's code
+We're going to need to configure both our Slack app and AWS, which will require a bit of back and forth between the two services. Let's start on AWS' side as we'll need to get our server running before we can configure our Slack App.
 
-- Open your EventsAPI Lambda function, and under Function code, you'll see a "Handler" box. This is where we tell Lambda which python function should be ran when a request is received. The CloudFormation template we ran uploaded the code and dependencies for the 3 different steps, so we'll only need to point the handler to the right function: replace `event_step1.event_handler` with `event_step2.event_handler`, and hit save.
+## Creating endpoints and corresponding lambdas
 
-- Take a look at the differences between each version of the code. You'll notice that they're very similar: we've only added instructions for the new type of event that our app is receiving.
-When the app detects a `member_joined_channel`, it will grab the relevant info from the event payload, and use it to call the `conversations.info` endpoint of Slack's web API. The response will be used to build a message, sent to the user with the `chat.postEphemeral` endpoint.
+We're going to use AWS' CloudFormation to automatically configure the API Gateway's endpoints and their corresponding Lambda functions. 
+
+- Download the channel-concierge.yaml file provided here
+- Loggin to your AWS account, and open Cloudformation
+- Click on "Create Stack", and under "Choose a template" use the "Upload a template to Amazon S3" option. Select the yaml file you just downloaded
+- You'll be asked for a Stack name – This can be anything that makes sense for you, for Instance "Slack-Channel-Concierge-App"
+- On the next screen ("Options"), scroll down and click "next", leaving all the settings to their default values.
+- Review your Stack on the final scree, tick the Capabilities box and hit "Create"
+- CloudFormation will then take a few minutes to create the different endpoints, resources and lambdas
+- Once the Stack has reached the "CREATE_COMPLETE" status, it's ready to be used. If you click on "Outputs", you'll see two URLs: they are where we'll configure our Slack app to send events (step1 and step2) and button click requests (step3).
+
+## Creating your Slack app, adding a bot user and subscribing to events:
+
+The app will be the container for the different API elements we're going to use.
+
+- Open up your [app's list](https://api.slack.com/apps) and click on "Create New App". You will then be asked to pick a name for your app (for instance, channel-concierge) and on which workspace you'd like this app to live. Click on "create app" to finish creating your app.
+
+- Click on "Bot users" (left column) and add a bot user to your app. By default, your bot will inherit your app's name. Click on "Add Bot User" to add the bot to your app.
+[More info about Bot Users](https://api.slack.com/bot-users)
+
+- Click on "Basic Information" (left column), and scroll down to "verification token". Copy that value, and go back to your AWS account. Open Lambda, and click on the "EventsAPI" function that was created by CloudFormation. Scroll down to "environment variables", and you should see an "APP_TOKEN" variable with a placeholder value. Replace that value with your the verification token you just copied.
+Note: to keep this workshop simple, we're using a verification token here, but we'd recommend upgrading your app to us signing secrets: https://api.slack.com/docs/verifying-requests-from-slack
+
+- Go back to your Slack app configuration page, and click on "Event Subscription" (left column). Toggle the event subscription (top right), and open CloudFormation again. In the "Outputs" tab, grab the "apiGatewayEventsURL", and paste it your Slack app's event subscription page. Slack will then send a request to your events endpoint, and the verification logic in your lambda should respond with the expected challenge parameter. This will validate your endpoint, and you can then subscribe to events.
+Under "Subscribe to Bot Events", click on "Add Bot User Event" and start typing `message.im`. Select these events to configure your app to send payloads to AWS whenever a Direct Message is sent to your Bot.
+Don't forget to hit save! Also, make sure you've subscribed to bot events, rather than workspace events.
+[More info about the Events API](https://api.slack.com/events-api)
+
+- Click on "Install App" (left column), and click on the "Install App to Workspace" button. Follow the instructions in the OAuth flow, authorizing and installing your app to your workspace. This will take you back to this install page, which will show two tokens: copy the bot token (starting in `xoxb`), and go back to your Lambda config: paste this value as "BOT_TOKEN" environment variable.
+
+- Open your Slack workspace, and then the DM with your bot. Sending any message here should trigger a response from the bot.
+
+Got the reponse from the bot? Awesome! You can move on to the step2 branch!
+Not getting a response? Check the troubleshooting steps below!
 
 
-## Getting a welcome message
+## How does this work?
 
-- Invite your bot to a channel: you will only receive events if your bot is a member of the channel
-- Set a purpose / topic
-- Leave and rejoin to trigger the `member_joined_channel` event, or invite a new user to the channel
-- The joining user will receive an ephemeral message from the bot.
+- When you send a message to your bot, Slack will send a payload to our Events endpoint.
+- The payload will be directed to your EventsAPI Lambda Function, which will parse the JSON data and check the event's type.
+- If the event is a message (which should always be the case if you've subscribed to the right events!), the app will grab the channel id from the payload, and use it to respond by calling the `chat.postMessage` endpoint of Slack's webAPI.
+
+## Troubleshooting
+
+If you're not getting a response, check the following:
+- TODO
+
 
