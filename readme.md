@@ -16,16 +16,21 @@ We're going to use AWS' CloudFormation to automatically configure the API Gatewa
 
 - Download the channel-concierge.yaml file provided here
 - Loggin to your AWS account, and open Cloudformation
+- Make sure you're currently in the "US East / Ohio" region
 - Click on "Create Stack", and under "Choose a template" use the "Upload a template to Amazon S3" option. Select the yaml file you just downloaded
+![Create Stack](docs/step1-Create_A_New_Stack.png)
 - You'll be asked for a Stack name – This can be anything that makes sense for you, for Instance "Slack-Channel-Concierge-App"
 - On the next screen ("Options"), scroll down and click "next", leaving all the settings to their default values.
 - Review your Stack on the final screen, tick the Capabilities box and hit "Create"
 - CloudFormation will then take a few minutes to create the different endpoints, resources and lambdas
 - Once the Stack has reached the "CREATE_COMPLETE" status, it's ready to be used. If you click on "Outputs", you'll see two URLs: they are where we'll configure our Slack app to send events (step1 and step2) and button click requests (step3).
+![Bot token](docs/step1-CloudFormation_Management_Console.png)
+
 
 ## Creating your Slack app, adding a bot user and subscribing to events:
 
 The app will be the container for the different API elements we're going to use.
+![Slack App config](docs/step1-Slack_app_config.png)
 
 - Open up your [app's list](https://api.slack.com/apps) and click on "Create New App". You will then be asked to pick a name for your app (for instance, channel-concierge) and on which workspace you'd like this app to live. Click on "create app" to finish creating your app.
 
@@ -33,16 +38,20 @@ The app will be the container for the different API elements we're going to use.
 [More info about Bot Users](https://api.slack.com/bot-users)
 
 - Click on "Basic Information" (left column), and scroll down to "verification token". Copy that value, and go back to your AWS account. Open Lambda, and click on the "EventsAPI" function that was created by CloudFormation. Scroll down to "environment variables", and you should see an "APP_TOKEN" variable with a placeholder value. Replace that value with your the verification token you just copied.
+![Bot token](docs/step1-env_variables_Lambda_Management_Console.png)
 Note: to keep this workshop simple, we're using a verification token here, but we'd recommend upgrading your app to us signing secrets: https://api.slack.com/docs/verifying-requests-from-slack
 
-- Go back to your Slack app configuration page, and click on "Event Subscription" (left column). Toggle the event subscription (top right), and open CloudFormation again. In the "Outputs" tab, grab the "apiGatewayEventsURL", and paste it your Slack app's event subscription page. Slack will then send a request to your events endpoint, and the verification logic in your lambda should respond with the expected challenge parameter. This will validate your endpoint, and you can then subscribe to events.
+- Go back to your Slack app configuration page, and click on "Event Subscription" (left column). Toggle the event subscription (top right), and open CloudFormation again. In the "Outputs" tab, grab the "apiGatewayEventsURL", and paste it your Slack app's event's "Request URL". Slack will then send a request to your events endpoint, and the verification logic in your lambda should respond with the expected challenge parameter. This will validate your endpoint, and you can then subscribe to events.
 Under "Subscribe to Bot Events", click on "Add Bot User Event" and start typing `message.im`. Select these events to configure your app to send payloads to AWS whenever a Direct Message is sent to your Bot.
 Don't forget to hit save! Also, make sure you've subscribed to bot events, rather than workspace events.
 [More info about the Events API](https://api.slack.com/events-api)
+![Event Subscription](docs/step1-Event_sub.png)
 
-- Click on "Install App" (left column), and click on the "Install App to Workspace" button. Follow the instructions in the OAuth flow, authorizing and installing your app to your workspace. This will take you back to this install page, which will show two tokens: copy the bot token (starting in `xoxb`), and go back to your Lambda config: paste this value as "BOT_TOKEN" environment variable.
+- Click on "Install App" (left column), and click on the "Install App to Workspace" button. Follow the instructions in the OAuth flow, authorizing and installing your app to your workspace. This will take you back to this install page, which will show two tokens: copy the bot token (starting in `xoxb`), and go back to your EventsAPI Lambda config: paste this value as the "BOT_TOKEN" environment variable.
+![Bot token](docs/step1-bot_token.png)
 
 - Open your Slack workspace, and then the DM with your bot. Sending any message here should trigger a response from the bot.
+![DM and response from the bot](docs/step1_DM.png)
 
 Got the reponse from the bot? Awesome! You can move on to the step2 branch!
 Not getting a response? Check the troubleshooting steps below!
