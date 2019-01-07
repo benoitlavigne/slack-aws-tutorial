@@ -19,7 +19,7 @@ We're going to use AWS' CloudFormation to automatically configure the API Gatewa
 - Click on "Create Stack", and under "Choose a template" use the "Upload a template to Amazon S3" option. Select the yaml file you just downloaded
 - You'll be asked for a Stack name – This can be anything that makes sense for you, for Instance "Slack-Channel-Concierge-App"
 - On the next screen ("Options"), scroll down and click "next", leaving all the settings to their default values.
-- Review your Stack on the final scree, tick the Capabilities box and hit "Create"
+- Review your Stack on the final screen, tick the Capabilities box and hit "Create"
 - CloudFormation will then take a few minutes to create the different endpoints, resources and lambdas
 - Once the Stack has reached the "CREATE_COMPLETE" status, it's ready to be used. If you click on "Outputs", you'll see two URLs: they are where we'll configure our Slack app to send events (step1 and step2) and button click requests (step3).
 
