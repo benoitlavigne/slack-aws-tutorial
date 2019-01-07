@@ -7,6 +7,8 @@ Slack channels can be used in a variety of ways, and teams often create dedicate
 
 When a user joins a channel, the app will send them an ephemeral message detailing the channel's topic and purpose, and ask them to confirm that they've read it by clicking a button. When the button is clicked, the app will post a message visible to everyone in the channel.
 
+![app overview](docs/app_overview.gif)
+
 This app will give you an overview of the following components:
 - The [Events API](https://api.slack.com/events-api): Apps can subscribe to specific events, and receive a payload when they occur. This will kick off our app's workflow
 - The [Web API](https://api.slack.com/web): Apps can use the web API to read / write Slack data. The web API allows this app to get the channel's topic and purpose, and to post messages in the channel
