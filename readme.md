@@ -30,12 +30,13 @@ We're going to use AWS' CloudFormation to automatically configure the API Gatewa
 ## Creating your Slack app, adding a bot user and subscribing to events:
 
 The app will be the container for the different API elements we're going to use.
-![Slack App config](docs/step1-Slack_app_config.png)
 
 - Open up your [app's list](https://api.slack.com/apps) and click on "Create New App". You will then be asked to pick a name for your app (for instance, channel-concierge) and on which workspace you'd like this app to live. Click on "create app" to finish creating your app.
 
+![Slack App config](docs/step1-Slack_app_config.png)
 - Click on "Bot users" (left column) and add a bot user to your app. By default, your bot will inherit your app's name. Click on "Add Bot User" to add the bot to your app.
 [More info about Bot Users](https://api.slack.com/bot-users)
+
 
 - Click on "Basic Information" (left column), and scroll down to "verification token". Copy that value, and go back to your AWS account. Open Lambda, and click on the "EventsAPI" function that was created by CloudFormation. Scroll down to "environment variables", and you should see an "APP_TOKEN" variable with a placeholder value. Replace that value with your the verification token you just copied.
 ![Bot token](docs/step1-env_variables_Lambda_Management_Console.png)
