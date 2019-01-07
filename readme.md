@@ -46,14 +46,14 @@ This app gives you an overview of the following components:
 
 - the Events API, which allows you to receive payloads when specific events occur. They can be used to keep track of specific events, or as we did here, to trigger workflows.
 You can try subscribing to additional events, as we did in step2, by adding the corresponding logic to the code.
-(More about the Events API)[https://api.slack.com/events-api]
+[More about the Events API](https://api.slack.com/events-api)
 
 - The Web API, to programmatically read and write Slack data. Here we've used the `conversations.info` endpoint to grab more details about the channel that was just joined, and `chat.postEphemeral` and `chat.postMessage` to post messages.
-(Full list of API methods)[https://api.slack.com/methods]
+[Full list of API methods](https://api.slack.com/methods)
 
 - Interactive messages allow users to interact with your app via buttons, menus, and actions. They give your app more ways to get input from users and allow you to create quick and powerful worflows. 
 We've used a fairly simple example here (one button), but adding more buttons and menus would use the same endpoint and a similar logic.
-(More about interactive messages)[https://api.slack.com/interactive-messages]
+[More about interactive messages](https://api.slack.com/interactive-messages)
 
 
 
