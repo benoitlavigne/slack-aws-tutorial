@@ -7,7 +7,7 @@ As a third step, we're going to modify the message posted when a user joins a ch
 
 ### Adding an interactive endpoint to our app
 
-Just like events send a payload to a specific endpoint, [buttons, menus, dialogs, actions](https://api.slack.com/interactive-messages)) will send a query to an endpoint of our choice.
+Just like events send a payload to a specific endpoint, [buttons, menus, dialogs, actions](https://api.slack.com/interactive-messages) will send a query to an endpoint of our choice.
 The endpoint and its corresponding Lambda have been built by CloudFormation, so we'll just need to configure our Slack app to let it know where to send those requests, and 
 
 - Open CloudFormation again. In the "Outputs" tab, grab the "apiGatewayActionsURL"
