@@ -67,6 +67,15 @@ Not getting a response? Check the troubleshooting steps below!
 ## Troubleshooting
 
 If you're not getting a response, check the following:
-- TODO
+
+- Is your "Event Subscription" endpoint configured, and did the URL validate? 
+If you're seeing a 500 when validating the URL, you're probably not using the right endpoint. 
+If you're seeing a 403, that means the verification token value is not properly configured
+
+- Are you subscribing to the correct event (`message.im`)?
+
+- Can you see the event request in your logs? 
+If you see the event but your bot isn't able to post a response, check that you've got the right value for the BOT_TOKEN environment variable
+
 
 
