@@ -1,7 +1,10 @@
 import json
+import os
 from urllib.parse import parse_qs
 
 from lib.make_response import make_response
+
+APP_TOKEN = os.environ.get("APP_TOKEN")
 
 
 def button_handler(event, context):
@@ -16,12 +19,18 @@ def button_handler(event, context):
 
 def button_processor(button_payload):
 
-    user_id = button_payload["user"]["id"]
+    if button_payload.get("token") == APP_TOKEN:
 
-    response_body = {
-        "text": f"<@{user_id}> Confirmed that they have read this channel's topic and purpose",
-        "replace_original": False,
-        "response_type": "in_channel"
-    }
+        user_id = button_payload["user"]["id"]
 
-    return make_response(response_body, 200)
+        response_body = {
+            "text": f"<@{user_id}> Confirmed that they have read this channel's topic and purpose",
+            "replace_original": False,
+            "response_type": "in_channel"
+        }
+
+        return make_response(response_body, 200)
+
+    else:
+
+        return make_response("could not authenticate, token did not match", 403)
