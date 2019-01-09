@@ -38,7 +38,7 @@ The app will be the container for the different API elements we're going to use.
 [More info about Bot Users](https://api.slack.com/bot-users)
 
 
-- Click on "Basic Information" (left column), and scroll down to "verification token". Copy that value, and go back to your AWS account. Open Lambda, and click on the "EventsAPI" function that was created by CloudFormation. Scroll down to "environment variables", and you should see an "APP_TOKEN" variable with a placeholder value. Replace that value with your the verification token you just copied.
+- Click on "Basic Information" (left column), and scroll down to "verification token". Copy that value, and go back to your AWS account. Open Lambda, and click on the "EventsAPI" function that was created by CloudFormation. Scroll down to "environment variables", and you should see an "APP_TOKEN" variable with a placeholder value. Replace that value with your the verification token you just copied and hit save.
 ![Bot token](docs/step1-env_variables_Lambda_Management_Console.png)
 Note: to keep this workshop simple, we're using a verification token here, but we'd recommend upgrading your app to us signing secrets: https://api.slack.com/docs/verifying-requests-from-slack
 
@@ -48,7 +48,7 @@ Don't forget to hit save! Also, make sure you've subscribed to bot events, rathe
 [More info about the Events API](https://api.slack.com/events-api)
 ![Event Subscription](docs/step1-Event_sub.png)
 
-- Click on "Install App" (left column), and click on the "Install App to Workspace" button. Follow the instructions in the OAuth flow, authorizing and installing your app to your workspace. This will take you back to this install page, which will show two tokens: copy the bot token (starting in `xoxb`), and go back to your EventsAPI Lambda config: paste this value as the "BOT_TOKEN" environment variable.
+- Click on "Install App" (left column), and click on the "Install App to Workspace" button. Follow the instructions in the OAuth flow, authorizing and installing your app to your workspace. This will take you back to this install page, which will show two tokens: copy the bot token (starting in `xoxb`), and go back to your EventsAPI Lambda config: paste this value as the "BOT_TOKEN" environment variable and hit save.
 ![Bot token](docs/step1-bot_token.png)
 
 - Open your Slack workspace, and then the DM with your bot. Sending any message here should trigger a response from the bot.
