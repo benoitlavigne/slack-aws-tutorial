@@ -40,7 +40,7 @@ Resources:
     Type: "AWS::Lambda::Function"
     Properties:
       Code:
-        S3Bucket: slack-aws-meetup
+        S3Bucket: slack-aws-meetup-syd
         S3Key: Events-lambda.zip
       Description: "AWS Meetup"
       FunctionName: "EventsAPI"
@@ -98,7 +98,7 @@ Resources:
     Type: "AWS::Lambda::Function"
     Properties:
       Code:
-        S3Bucket: slack-aws-meetup
+        S3Bucket: slack-aws-meetup-syd
         S3Key: Buttons-lambda.zip
       Description: "AWS Meetup"
       FunctionName: "ActionsAPI"
