@@ -15,7 +15,7 @@ We're going to need to configure both our Slack app and AWS, which will require 
 We're going to use AWS' CloudFormation to automatically configure the API Gateway's endpoints and their corresponding Lambda functions. 
 
 - Download the channel-concierge.yaml file provided here
-- Loggin to your AWS account, and open Cloudformation
+- Log in to your AWS account, and open Cloudformation
 - Make sure you're currently in the "Asia Pacific (Sydney)" region
 - Click on "Create Stack", and under "Choose a template" use the "Upload a template to Amazon S3" option. Select the yaml file you just downloaded
 ![Create Stack](docs/step1-Create_A_New_Stack.png)
