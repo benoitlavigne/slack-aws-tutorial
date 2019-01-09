@@ -16,7 +16,7 @@ We're going to use AWS' CloudFormation to automatically configure the API Gatewa
 
 - Download the channel-concierge.yaml file provided here
 - Loggin to your AWS account, and open Cloudformation
-- Make sure you're currently in the "US East / Ohio" region
+- Make sure you're currently in the "Asia Pacific (Sydney)" region
 - Click on "Create Stack", and under "Choose a template" use the "Upload a template to Amazon S3" option. Select the yaml file you just downloaded
 ![Create Stack](docs/step1-Create_A_New_Stack.png)
 - You'll be asked for a Stack name – This can be anything that makes sense for you, for Instance "Slack-Channel-Concierge-App"
