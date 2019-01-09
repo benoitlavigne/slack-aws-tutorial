@@ -11,7 +11,7 @@ Just like events send a payload to a specific endpoint, [buttons, menus, dialogs
 The endpoint and its corresponding Lambda have been built by CloudFormation, so we'll just need to configure our Slack app to let it know where to send those requests, and 
 
 - Open CloudFormation again. In the "Outputs" tab, grab the "apiGatewayActionsURL"
-- Go back to your Slack App's config (from https://api.slack.com/apps, click on your app's name), and click on "Interractive Components" (left column). Paste your endpoint's URL in the "Request URL" field.
+- Go back to your Slack App's config (from https://api.slack.com/apps, click on your app's name), and click on "Interractive Components" (left column). Click on the toggle button (top right), and paste your endpoint's URL in the "Request URL" field.
 - Don't forget to hit "Save Changes"!
 ![interactive endpoint](docs/step3-interactive_components.png)
 
