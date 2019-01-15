@@ -63,6 +63,7 @@ Not getting a response? Check the troubleshooting steps below!
 - When you send a message to your bot, Slack will send a payload to our Events endpoint.
 - The payload will be directed to your EventsAPI Lambda Function, which will parse the JSON data and check the event's type.
 - If the event is a message (which should always be the case if you've subscribed to the right events!), the app will grab the channel id from the payload, and use it to respond by calling the `chat.postMessage` endpoint of Slack's webAPI.
+![architecture](docs/step1-architecture.png)
 
 ## Troubleshooting
 
