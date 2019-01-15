@@ -21,9 +21,7 @@ Your app is now configured to receive payloads when a user joins a channel your 
 ![Lambda handler](docs/step2-Lambda_handler.png)
 
 
-You may want to take a moment to to compare both versions of the code.You'll notice that they're very similar: we've only added instructions for the new type of event that our app is receiving.
-When the app detects a `member_joined_channel`, it will grab the relevant info from the event payload, and use it to call the `conversations.info` endpoint of Slack's web API. The response will be used to build a message, sent to the user with the `chat.postEphemeral` endpoint.
-We've also modified the bot's answer to Direct Messages: your users may try to message your bot, so it's helpful to provide info about how to use the bot there.
+
 
 
 ## Getting a welcome message
@@ -33,3 +31,12 @@ We've also modified the bot's answer to Direct Messages: your users may try to m
 - Leave and rejoin to trigger the `member_joined_channel` event, or invite a new user to the channel
 - The joining user will receive an ephemeral message from the bot.
 
+## How does this work
+
+- When a user joins a channel that our bot is a member of, Slack Events API will send a `member_joined_channel` event to our `/events` endpoint
+- The request will be passed to the Lambda function, which will call the `conversations.info` endpoint of the Web API, and extract the channel's topic and purpose .
+- Then, the Lambda will call the `chat.postEphemeral` endpoint in order to send a message to the joining user.
+
+Hint: A good way to understand more about the app's logic and its corresponding code is to compare the `event_step1.py` and `event_step2.py` files. 
+
+![architecture diagram](docs/step2-diagram.png)
