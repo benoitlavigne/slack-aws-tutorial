@@ -45,7 +45,7 @@ As before, we'll change the handler to point to the right version.
 - When this button is clicked, Slack will send a request to our interactive endpoint, which will trigger a different Lambda
 - The handler for this lambda will parse the incoming payload, and return the confirmation message directly in response to the request
 
-![architecture diagram](docs/)
+![architecture diagram](docs/step3-architecture_diagram.png)
 
 
 ## Taking this further
