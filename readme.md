@@ -39,6 +39,14 @@ As before, we'll change the handler to point to the right version.
 - The joining user will receive an ephemeral message from the bot, this time with a button
 - Clicking the button will post a message in the channel
 
+### How does this work
+
+- We've updated the message sent to the joining user in order to include a confirmation button to it.
+- When this button is clicked, Slack will send a request to our interactive endpoint, which will trigger a different Lambda
+- The handler for this lambda will parse the incoming payload, and return the confirmation message directly in response to the request
+
+![architecture diagram](docs/)
+
 
 ## Taking this further
 
