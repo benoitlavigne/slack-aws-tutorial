@@ -1,12 +1,15 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: "AWS Meetup - Slackbots"
+Description: "Slack Workshop - AWS Apps"
 
 
 Resources:
   apiGateway:
     Type: "AWS::ApiGateway::RestApi"
     Properties:
-      Name: "SlackAwsMeetup"
+      Name: !Join
+        - ""
+        - - "SlackAwsWorkshop"
+          - !Ref yourName
       Description: "Slack"
 
 ##############
@@ -43,7 +46,10 @@ Resources:
         S3Bucket: slack-aws-meetup-syd
         S3Key: Events-lambda.zip
       Description: "AWS Meetup"
-      FunctionName: "EventsAPI"
+      FunctionName: !Join
+        - ""
+        - - "EventsAPI-"
+          - !Ref yourName
       Environment:
         Variables:
           APP_TOKEN: your_app_verification_token
@@ -101,7 +107,10 @@ Resources:
         S3Bucket: slack-aws-meetup-syd
         S3Key: Buttons-lambda.zip
       Description: "AWS Meetup"
-      FunctionName: "ActionsAPI"
+      FunctionName: !Join
+        - ""
+        - - "ActionsAPI-"
+          - !Ref yourName
       Environment:
         Variables:
           APP_TOKEN: your_app_verification_token
@@ -167,3 +176,9 @@ Outputs:
     Value: !Sub "https://${apiGateway}.execute-api.${AWS::Region}.amazonaws.com/default/events"
   apiGatewayActionsURL:
     Value: !Sub "https://${apiGateway}.execute-api.${AWS::Region}.amazonaws.com/default/actions"
+
+Parameters: 
+  yourName: 
+    Type: String
+    Default: John-Doe
+    Description: Enter a unique name for your stack, for instance firstName-lastName. This will allow you to identify your stack if several people on your team are completing the tutorial
