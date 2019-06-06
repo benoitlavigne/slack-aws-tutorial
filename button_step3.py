@@ -1,10 +1,8 @@
 import json
-import os
 from urllib.parse import parse_qs
+import botocore.vendored.requests as requests
 
 from lib.make_response import make_response
-
-APP_TOKEN = os.environ.get("APP_TOKEN")
 
 
 def button_handler(event, context):
@@ -19,18 +17,18 @@ def button_handler(event, context):
 
 def button_processor(button_payload):
 
-    if button_payload.get("token") == APP_TOKEN:
+    user_id = button_payload["user"]["id"]
+    response_url = button_payload["response_url"]
 
-        user_id = button_payload["user"]["id"]
+    response_payload = {
+        "text": f"<@{user_id}> Confirmed that they have read this channel's topic and purpose",
+        "replace_original": False,
+        "response_type": "in_channel"
+    }
 
-        response_body = {
-            "text": f"<@{user_id}> Confirmed that they have read this channel's topic and purpose",
-            "replace_original": False,
-            "response_type": "in_channel"
-        }
+    r = requests.post(response_url, json=response_payload)
 
-        return make_response(response_body, 200)
-
+    if r.json().get("ok") == True:
+        return make_response("ok", 200)
     else:
-
-        return make_response("could not authenticate, token did not match", 403)
+        return make_response("error posting to Slack", 500)
