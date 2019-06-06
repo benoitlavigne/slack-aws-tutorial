@@ -26,10 +26,10 @@ def event_handler(event, context):
         else:
             success = event_processor(event_payload)
             if success:
-                print ("event successfully handled")
+                print("event successfully handled")
                 return make_response("ok", 200)
             else:
-                print ("something went wrong when processing the event")
+                print("something went wrong when processing the event")
                 return make_response("", 500)
     else:
         print("token did not match")
@@ -49,12 +49,22 @@ def event_processor(event_payload):
         # ignoring those and exiting early to avoid infinite loops
         if "subtype" in event_payload["event"]:
             return True
+
         # other cases are messages posted by users, responding
         else:
             channel_id = event_payload["event"]["channel"]
             text = "Hi there! I'm a bot who can help users understand what channels are about.\nI won't be of much use here, but if you invite me to a channel I'll welcome users when they join it!"
+            blocks = [
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "plain_text",
+                        "text": text
+                    }
+                }
+            ]
             response = sc.api_call("chat.postMessage",
-                                   channel=channel_id, text=text)
+                                   channel=channel_id, blocks=blocks)
             # Slack API will return an "ok":True or "ok":False
             success = response.get("ok")
             return success
@@ -75,24 +85,34 @@ def event_processor(event_payload):
             topic, purpose = "error", "error"
 
         # building the message we want to send the user
+
         text = f"welcome to <#{channel_id}>! Here's the channel's topic: \n {topic} \n and the purpose: \n {purpose}"
-        # sending an ephemeral message to the user who just joined the channel.
-        attachments = [
+        blocks = [
             {
-                "fallback": "open Slack to acknowledge",
-                "callback_id": "ack",
-                "actions": [
+                "type": "section",
+                "text": {
+                        "type": "mrkdwn",
+                        "text": text
+                }
+            },
+            {
+                "type": "actions",
+                "elements": [
                     {
-                        "name": "confirm",
-                        "text": "confirm",
                         "type": "button",
+                        "text": {
+                                "type": "plain_text",
+                                "text": "Confirm"
+                        },
                         "value": "confirm"
                     }
                 ]
             }
         ]
+
+        # sending an ephemeral message to the user who just joined the channel.
         response = sc.api_call("chat.postEphemeral",
-                               channel=channel_id, text=text, attachments=attachments, user=user_id)
+                               channel=channel_id, blocks=blocks, user=user_id)
         # Slack API will return an "ok":True or "ok":False
         success = response.get("ok")
         return success
