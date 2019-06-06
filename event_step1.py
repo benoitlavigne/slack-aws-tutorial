@@ -26,10 +26,10 @@ def event_handler(event, context):
         else:
             success = event_processor(event_payload)
             if success:
-                print ("event successfully handled")
+                print("event successfully handled")
                 return make_response("ok", 200)
             else:
-                print ("something went wrong when processing the event")
+                print("something went wrong when processing the event")
                 return make_response("", 500)
     else:
         print("token did not match")
@@ -53,8 +53,17 @@ def event_processor(event_payload):
         else:
             channel_id = event_payload["event"]["channel"]
             text = "Hi there! I've received your message :tada:.\n Congratulations, you've finished the first branch of this workshop"
+            blocks = [
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "plain_text",
+                        "text": text
+                    }
+                }
+            ]
             response = sc.api_call("chat.postMessage",
-                                   channel=channel_id, text=text)
+                                   channel=channel_id, blocks=blocks)
             # Slack API will return an "ok":True or "ok":False
             success = response.get("ok")
             return success
