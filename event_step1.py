@@ -47,7 +47,7 @@ def event_processor(event_payload):
 
         # the event will have a subtype if it's an automated or bot message
         # ignoring those and exiting early, avoiding infinite loops
-        if "subtype" in event_payload["event"]:
+        if "bot_id" in event_payload["event"]:
             return True
         # other cases are messages posted by users, responding
         else:
