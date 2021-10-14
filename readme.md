@@ -1,3 +1,6 @@
+# THESE INSTRUCTIONS ARE OUTDATED, YOU CAN USE THEM AS A REFERENCE BUT STEPS BY STEPS DETAILS WON'T WORK
+
+
 
 # What is this?
 This repo contains code and instructions to build a Slack app and host it on AWS. It is split into 3 branches, each containing instructions for a different version of the app, walking you through the different steps of the configuration on each side.
